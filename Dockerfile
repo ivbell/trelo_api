@@ -35,8 +35,6 @@ RUN pnpm build
 
 ENV NODE_ENV production
 
-RUN pnpm install
-
 USER node
 
 ###################
