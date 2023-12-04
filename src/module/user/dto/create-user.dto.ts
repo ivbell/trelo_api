@@ -1,6 +1,6 @@
 import { UserEntity } from '@/src/module/user/entities/user.entity';
 import { OmitType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto extends OmitType(UserEntity, [
   'created',
@@ -8,7 +8,6 @@ export class CreateUserDto extends OmitType(UserEntity, [
   'deletedAt',
   'id',
 ]) {
-  @MinLength(8)
   @IsString()
   @IsNotEmpty()
   password_confirm: string;

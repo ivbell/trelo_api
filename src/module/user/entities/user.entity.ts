@@ -1,9 +1,10 @@
 import { BaseEntity } from '@/src/common/entity/BaseEntity';
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
 @Entity({
-  name: 'user',
+  schema: 'alena_servis',
+  name: 'profile',
 })
 export class UserEntity extends BaseEntity {
   @Column({
@@ -19,7 +20,6 @@ export class UserEntity extends BaseEntity {
   })
   @IsString()
   @IsNotEmpty()
-  @MinLength(8)
   password!: string;
 }
 

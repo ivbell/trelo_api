@@ -11,12 +11,12 @@ import { FastifyReply } from 'fastify';
 import { AuthService } from './auth.service';
 import { sessionConst } from './const/session.const';
 import { AuthenticatedDto } from './dto/authenticated.dto';
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post()
+  @Post('/authentication')
   async authenticated(
     @Body() dto: AuthenticatedDto,
     @Res({ passthrough: true }) response: FastifyReply,
@@ -28,5 +28,12 @@ export class AuthController {
     );
     response.setCookie(sessionConst.session_name_cookie, jwt);
     return new HttpException('User authenticated', HttpStatus.OK);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('/logout')
+  async logout(@Res({ passthrough: true }) res: FastifyReply) {
+    res.setCookie(sessionConst.session_name_cookie, '');
+    return new HttpException('User logout', HttpStatus.OK);
   }
 }

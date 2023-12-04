@@ -42,10 +42,6 @@ export class AuthService {
   async validate(
     token: string,
   ): Promise<[payload: boolean | never, user: UserEntity]> {
-    console.log(
-      '🚀 ~ file: auth.service.ts:43 ~ AuthService ~ validate ~ token:',
-      token,
-    );
     try {
       const decoded: any = this.jwt.decode(token);
       if (!decoded) {

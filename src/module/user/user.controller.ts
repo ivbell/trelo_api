@@ -6,11 +6,11 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
-@Controller('user')
+@Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('/registration')
   async create(@Body() createUserDto: CreateUserDto): Promise<UserPublicType> {
     return serializePublicUserHelper(
       await this.userService.create(createUserDto),

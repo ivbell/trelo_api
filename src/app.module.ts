@@ -7,6 +7,9 @@ import configuration from './config/configuration';
 import { typeormFactory } from './config/factory/typeorm.factory';
 import { UserModule } from './module/user/user.module';
 import { AuthModule } from './module/auth/auth.module';
+import { ListModule } from './module/list/list.module';
+import { CardModule } from './module/card/card.module';
+import { BoardModule } from './module/board/board.module';
 
 @Module({
   imports: [
@@ -15,6 +18,7 @@ import { AuthModule } from './module/auth/auth.module';
       envFilePath: `${process.cwd()}/src/config/env/${
         process.env.NODE_ENV
       }.env`,
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -23,6 +27,9 @@ import { AuthModule } from './module/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    ListModule,
+    CardModule,
+    BoardModule,
   ],
   providers: [Logger],
 })
