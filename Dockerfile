@@ -35,7 +35,7 @@ RUN pnpm build
 
 ENV NODE_ENV production
 
-RUN pnpm install --prod --ignore-engines
+RUN pnpm install
 
 USER node
 
