@@ -22,11 +22,13 @@ export class AuthController {
     @Res({ passthrough: true }) response: FastifyReply,
   ): Promise<HttpException> {
     const jwt = await this.authService.authenticatedUser(dto);
-    console.log(
-      '🚀 ~ file: auth.controller.ts:25 ~ AuthController ~ jwt:',
-      jwt,
-    );
-    response.setCookie(sessionConst.session_name_cookie, jwt);
+    response.setCookie(sessionConst.session_name_cookie, jwt, {
+      path: '/',
+      signed: true,
+      sameSite: 'none',
+      secure: true,
+      httpOnly: true,
+    });
     return new HttpException('User authenticated', HttpStatus.OK);
   }
 
