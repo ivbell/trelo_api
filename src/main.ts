@@ -21,7 +21,12 @@ async function bootstrap() {
     },
   );
   const config = app.get(ConfigService);
-
+  app.enableCors({
+    origin: [config.get('app.client'), 'http://localhost:3000'],
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    preflightContinue: false,
+  });
   await app.register(fastifyCookie, {
     secret: config.get('cookie.secret'), // for cookies signature
   });
@@ -36,7 +41,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, doc);
   SwaggerModule.setup('api', app, document);
-  const { ADDRESS = 'localhost', PORT = '3000' } = process.env;
+  const { ADDRESS = 'localhost', PORT = '5001' } = process.env;
   await app.listen(PORT, ADDRESS);
 }
 
