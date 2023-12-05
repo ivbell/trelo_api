@@ -26,13 +26,6 @@ async function bootstrap() {
     secret: config.get('cookie.secret'), // for cookies signature
   });
 
-  app.enableCors({
-    origin: [config.get('app.client'), 'http://localhost:3000'],
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    preflightContinue: false,
-  });
-
   app.useGlobalPipes(new ValidationPipe());
 
   const doc = new DocumentBuilder()
