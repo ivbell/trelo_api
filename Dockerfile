@@ -44,10 +44,10 @@ USER node
 ###################
 
 FROM node:20-alpine As production
+RUN npm install -g pnpm
 ENV NODE_ENV production
 ENV ADDRESS=0.0.0.0 PORT=3000
 
-COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/ ./
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "pnpm", "run", "start" ]
