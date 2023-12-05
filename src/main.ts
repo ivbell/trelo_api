@@ -27,7 +27,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: config.get('app.client'),
+    origin: [config.get('app.client'), 'http://localhost:3000'],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     preflightContinue: false,
