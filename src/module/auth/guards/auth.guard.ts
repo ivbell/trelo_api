@@ -26,12 +26,16 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: FastifyRequest): string | undefined {
-    const cookies = request.unsignCookie(
-      request.cookies[sessionConst.session_name_cookie],
-    );
-    if (!cookies.valid) {
+    try {
+      const cookies = request.unsignCookie(
+        request.cookies?.[sessionConst.session_name_cookie],
+      );
+      if (!cookies.valid) {
+        return undefined;
+      }
+      return cookies.value;
+    } catch (error) {
       return undefined;
     }
-    return cookies.value;
   }
 }
