@@ -14,9 +14,7 @@ export default () => ({
     process.env.PASSWORD_SALT ??
     '932f3c1b56257ce8539ac269d7aab42550dacf8818d075f0bdf1990562aae3ef',
   jwt: {
-    secret:
-      process.env.JWT_SECRET ??
-      '932f3c1b56257ce8539ac269d7aab42550dacf8818d075f0bdf1990562aae3ef932f3c1b56257ce8539ac269d7aab42550dacf8818d075f0bdf1990562aae3ef',
+    secret: process.env.JWT_SECRET,
     expires_in: process.env.JWT_EXPIRE_IN ?? '30d',
   },
   cookie: {
