@@ -1,10 +1,19 @@
 import { serializePublicUserHelper } from '@/src/module/user/helpers/serialize-public-user.helper';
 import { UserPublicType } from '@/src/module/user/type/user-public.type';
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
+import { MainResponseType } from '@/src/common/types/main-response.type';
 
 @Controller()
 export class UserController {
@@ -19,7 +28,12 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get('/profile')
-  profile(@Req() req: FastifyRequest) {
-    return req.user;
+  async profile(
+    @Req() req: FastifyRequest,
+  ): Promise<MainResponseType<UserPublicType>> {
+    return {
+      statusCode: HttpStatus.OK,
+      data: req.user,
+    };
   }
 }

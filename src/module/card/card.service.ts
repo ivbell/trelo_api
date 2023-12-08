@@ -31,7 +31,7 @@ export class CardService {
     user_id: number,
     cardId: number,
     boarId: number,
-  ): Promise<{ data: CardEntity; message: string }> {
+  ): Promise<CardEntity> {
     const card = await this.findBoardByQuery({
       board_id: boarId,
       id: cardId,
@@ -40,10 +40,7 @@ export class CardService {
     if (!card) {
       throw new ForbiddenException();
     }
-    return {
-      data: await this.cardRepo.softRemove(card),
-      message: 'Card delete',
-    };
+    return await this.cardRepo.softRemove(card);
   }
 
   async update(
@@ -51,7 +48,7 @@ export class CardService {
     cardId: number,
     boardId: number,
     user_id: number,
-  ): Promise<{ data: CardEntity; message: string }> {
+  ): Promise<CardEntity> {
     const card = await this.findBoardByQuery({
       user_id,
       id: cardId,
@@ -60,18 +57,10 @@ export class CardService {
     if (!card) {
       throw new ForbiddenException();
     }
-    return {
-      data: await this.cardRepo.save({ ...card, card_name: cardNewName }),
-      message: 'Card update',
-    };
+    return await this.cardRepo.save({ ...card, card_name: cardNewName });
   }
 
-  async findOne(
-    user_id: number,
-    boardId: number,
-  ): Promise<{
-    data: CardEntity;
-  }> {
+  async findOne(user_id: number, boardId: number): Promise<CardEntity> {
     const card = await this.findBoardByQuery({
       user_id,
       id: boardId,
@@ -79,9 +68,7 @@ export class CardService {
     if (!card) {
       throw new ForbiddenException();
     }
-    return {
-      data: card,
-    };
+    return card;
   }
 
   async findBoardByQuery(

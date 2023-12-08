@@ -11,6 +11,7 @@ import { FastifyReply } from 'fastify';
 import { AuthService } from './auth.service';
 import { sessionConst } from './const/session.const';
 import { AuthenticatedDto } from './dto/authenticated.dto';
+import { MainResponseType } from '@/src/common/types/main-response.type';
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -20,7 +21,7 @@ export class AuthController {
   async authenticated(
     @Body() dto: AuthenticatedDto,
     @Res({ passthrough: true }) response: FastifyReply,
-  ): Promise<HttpException> {
+  ): Promise<MainResponseType> {
     const jwt = await this.authService.authenticatedUser(dto);
     response.setCookie(sessionConst.session_name_cookie, jwt, {
       path: '/',
@@ -29,13 +30,21 @@ export class AuthController {
       secure: true,
       httpOnly: true,
     });
-    return new HttpException('User authenticated', HttpStatus.OK);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User authenticated',
+    };
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('/logout')
-  async logout(@Res({ passthrough: true }) res: FastifyReply) {
+  async logout(
+    @Res({ passthrough: true }) res: FastifyReply,
+  ): Promise<MainResponseType> {
     res.setCookie(sessionConst.session_name_cookie, '');
-    return new HttpException('User logout', HttpStatus.OK);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User logged out',
+    };
   }
 }

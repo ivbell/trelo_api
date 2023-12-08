@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Post,
   Put,
   Query,
@@ -13,6 +14,8 @@ import { CardService } from './card.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { FastifyRequest } from 'fastify';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { MainResponseType } from '@/src/common/types/main-response.type';
+import { CardEntity } from './entities/card.entity';
 
 @Controller()
 export class CardController {
@@ -26,24 +29,46 @@ export class CardController {
 
   @UseGuards(AuthGuard)
   @Delete('/deleteCard')
-  delete(@Req() req: FastifyRequest, @Query() query) {
-    return this.cardService.delete(req.user.id, query.cardId, query.boarId);
+  async delete(
+    @Req() req: FastifyRequest,
+    @Query() query,
+  ): Promise<MainResponseType<CardEntity>> {
+    return {
+      data: await this.cardService.delete(
+        req.user.id,
+        query.cardId,
+        query.boarId,
+      ),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   @UseGuards(AuthGuard)
   @Put('/renameCard')
-  updateCard(@Req() req: FastifyRequest, @Query() query) {
-    return this.cardService.update(
-      query.cardNewName,
-      query.cardId,
-      query.boardId,
-      req.user.id,
-    );
+  async updateCard(
+    @Req() req: FastifyRequest,
+    @Query() query,
+  ): Promise<MainResponseType<CardEntity>> {
+    return {
+      data: await this.cardService.update(
+        query.cardNewName,
+        query.cardId,
+        query.boardId,
+        req.user.id,
+      ),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   @UseGuards(AuthGuard)
   @Get('/getCard')
-  getOne(@Req() req: FastifyRequest, @Query() query) {
-    return this.cardService.findOne(req.user.id, query.boardId);
+  async getOne(
+    @Req() req: FastifyRequest,
+    @Query() query,
+  ): Promise<MainResponseType<CardEntity>> {
+    return {
+      data: await this.cardService.findOne(req.user.id, query.boardId),
+      statusCode: HttpStatus.OK,
+    };
   }
 }
