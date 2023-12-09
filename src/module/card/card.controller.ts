@@ -47,7 +47,7 @@ export class CardController {
   @Put('/renameCard')
   async updateCard(
     @Req() req: FastifyRequest,
-    @Query() query,
+    @Query() query: { cardNewName: string; cardId: number; boardId: number },
   ): Promise<MainResponseType<CardEntity>> {
     return {
       data: await this.cardService.update(
@@ -64,10 +64,15 @@ export class CardController {
   @Get('/getCard')
   async getOne(
     @Req() req: FastifyRequest,
-    @Query() query,
-  ): Promise<MainResponseType<CardEntity>> {
+    @Query() query: { boardId: number },
+  ): Promise<MainResponseType<CardEntity[]>> {
     return {
-      data: await this.cardService.findOne(req.user.id, query.boardId),
+      data: await this.cardService.findBoardsByQuery({
+        where: {
+          user_id: req.user.id,
+          board_id: query.boardId,
+        },
+      }),
       statusCode: HttpStatus.OK,
     };
   }

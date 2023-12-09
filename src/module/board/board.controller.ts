@@ -9,7 +9,7 @@ import {
   Put,
   Query,
   Req,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { AuthGuard } from '../auth/guards/auth.guard';
