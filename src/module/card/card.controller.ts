@@ -31,7 +31,11 @@ export class CardController {
   @Delete('/deleteCard')
   async delete(
     @Req() req: FastifyRequest,
-    @Query() query,
+    @Query()
+    query: {
+      cardId: number;
+      boarId: number;
+    },
   ): Promise<MainResponseType<CardEntity>> {
     return {
       data: await this.cardService.delete(
