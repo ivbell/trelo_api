@@ -4,6 +4,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   HttpStatus,
   Post,
   Req,
@@ -19,11 +20,17 @@ import { MainResponseType } from '@/src/common/types/main-response.type';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Post('/registration')
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserPublicType> {
-    return serializePublicUserHelper(
-      await this.userService.create(createUserDto),
-    );
+  async create(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<MainResponseType<UserPublicType>> {
+    return {
+      data: serializePublicUserHelper(
+        await this.userService.create(createUserDto),
+      ),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   @UseGuards(AuthGuard)
