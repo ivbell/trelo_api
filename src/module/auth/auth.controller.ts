@@ -1,8 +1,8 @@
+import { MainResponseType } from '@/src/common/types/main-response.type';
 import {
   Body,
   Controller,
   HttpCode,
-  HttpException,
   HttpStatus,
   Post,
   Res,
@@ -11,7 +11,6 @@ import { FastifyReply } from 'fastify';
 import { AuthService } from './auth.service';
 import { sessionConst } from './const/session.const';
 import { AuthenticatedDto } from './dto/authenticated.dto';
-import { MainResponseType } from '@/src/common/types/main-response.type';
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
