@@ -1,26 +1,67 @@
-import { Injectable } from '@nestjs/common';
-import { CreateListDto } from './dto/create-list.dto';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UpdateListDto } from './dto/update-list.dto';
+import { ListEntity } from './entities/list.entity';
+import { CreateListDto } from './dto/create-list.dto';
+import { lstat } from 'fs';
 
 @Injectable()
 export class ListService {
-  create(createListDto: CreateListDto) {
-    return 'This action adds a new list';
+  constructor(
+    @InjectRepository(ListEntity)
+    private readonly listRepo: Repository<ListEntity>,
+  ) {}
+
+  async findAllByRepoId(id: number, user_id: number): Promise<ListEntity[]> {
+    return await this.listRepo.find({
+      where: {
+        user_id,
+        board_id: id,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all list`;
+  async updateList(id: number, user_id: number, dto: UpdateListDto) {
+    const list = await this.listRepo.findOneBy({
+      id,
+      user_id,
+    });
+    if (!list) {
+      throw new ForbiddenException();
+    }
+    return await this.listRepo.save({ ...list, ...dto });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} list`;
+  async createList(dto: CreateListDto, user_id: number): Promise<ListEntity> {
+    try {
+      return await this.listRepo.save({ ...dto, user_id });
+    } catch (e) {
+      throw new ForbiddenException(e);
+    }
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`;
+  async deleteList(id: number, user_id: number): Promise<ListEntity> {
+    try {
+      const list = await this.listRepo.findOne({
+        where: {
+          id,
+          user_id,
+        },
+      });
+      if (!list) {
+        throw new ForbiddenException();
+      }
+      return await this.listRepo.softRemove(list);
+    } catch (error) {
+      throw new ForbiddenException(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`;
+  async getOne(id: number, user_id: number): Promise<ListEntity> {
+    return await this.listRepo.findOneBy({
+      id,
+      user_id,
+    });
   }
 }
