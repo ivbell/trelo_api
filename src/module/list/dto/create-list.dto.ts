@@ -5,6 +5,10 @@ export class CreateListDto {
   @IsNotEmpty()
   board_id: number;
 
+  @IsNumber()
+  @IsNotEmpty()
+  card_id: number;
+
   @IsString()
   @IsNotEmpty()
   title: string;

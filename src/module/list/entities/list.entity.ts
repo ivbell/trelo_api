@@ -14,4 +14,9 @@ export class ListEntity extends BaseEntity {
 
   @Column()
   user_id: number;
+
+  @Column({
+    nullable: true,
+  })
+  card_id: number;
 }
