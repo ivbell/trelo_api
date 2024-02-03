@@ -41,11 +41,10 @@ export class ListController {
   @Put('list/update')
   async updateList(
     @Req() req: FastifyRequest,
-    @Query('listId') listId: number,
     @Body() dto: UpdateListDto,
   ): Promise<MainResponseType<ListEntity>> {
     return {
-      data: await this.listService.updateList(listId, req.user.id, dto),
+      data: await this.listService.updateList(req.user.id, dto),
       statusCode: HttpStatus.OK,
     };
   }

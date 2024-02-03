@@ -21,15 +21,16 @@ export class ListService {
     });
   }
 
-  async updateList(id: number, user_id: number, dto: UpdateListDto) {
+  async updateList(user_id: number, dto: UpdateListDto) {
+    const { list_id, ...rest } = dto;
     const list = await this.listRepo.findOneBy({
-      id,
+      id: list_id,
       user_id,
     });
     if (!list) {
       throw new ForbiddenException();
     }
-    return await this.listRepo.save({ ...list, ...dto });
+    return await this.listRepo.save({ ...list, ...rest });
   }
 
   async createList(dto: CreateListDto, user_id: number): Promise<ListEntity> {
