@@ -2,7 +2,6 @@ import { BaseEntity } from '@/src/common/entity/BaseEntity';
 import { Column, Entity } from 'typeorm';
 
 @Entity({
-  schema: 'alena_servis',
   name: 'board',
 })
 export class BoardEntity extends BaseEntity {

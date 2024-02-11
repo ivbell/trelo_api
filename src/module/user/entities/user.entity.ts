@@ -3,7 +3,6 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
 @Entity({
-  schema: 'alena_servis',
   name: 'profile',
 })
 export class UserEntity extends BaseEntity {
